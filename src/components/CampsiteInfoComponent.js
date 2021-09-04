@@ -1,7 +1,7 @@
-import react, { Component } from 'react';
+import react from 'react';
 import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap'
-class Campsiteinfo extends Component {
-    renderCampsite(campsite) {
+
+    function renderCampsite({campsite}) {
         return (
             <div className="col-md-5 m-1">
                 <Card>
@@ -14,40 +14,44 @@ class Campsiteinfo extends Component {
             </div>
         );
     };
-    renderComments(campsite) {
+    function renderComments({comments}) {
         if (comments) {
             return (
                 <div className='md-5 m-1'>
                     <h4>Comments</h4>
                     {comments.map(comments => {
                         return (
-                            <div>
-                                <div>
-                                    {comment.text}
+                            
+                                <div key={comments.Id}>
+                                   <p> {comment.text}<br />                                                            
+                                    {comment.author}, {new intl.DateTimeFormat("en-US", {year: "'numeric", month:"short", 
+                                    day: '2-digit' }).format(new Date(Date.parse(comment.date)))}
+                                </p>
                                 </div>
-                                <div>
-                                    {comment.author}
-                                </div>
-                                <div>{new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(new Date(Date.parse(comment.date)))}</div>
-                            </div>
+                                                           
                         )
 
-                    }
-
-                    )}
+                    })}
                 </div>                  
-                )
+            );
         }
     }
 
-    render() {       
-        
-        if (this.props.campsite) {
-            return <div className="row">{this.renderCampsite(this.props.campsite)}{this.renderComments(this.props.campsite.comments)}</div>
+    function CampsiteInfo(props) {
+        if (props.campsite) {
+            return (
+                <div className="container">
+                    <div className="row">
+                        <RenderCampsite campsite={props.campsite} />
+                        <RenderComments comments={props.campsite.comments} />
+                    </div>
+                </div>
+            );
         }
+        
         return <div />
         
     }
-}
+
 
 export default Campsiteinfo;
